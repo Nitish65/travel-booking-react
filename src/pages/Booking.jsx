@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import { submitBooking } from "../services/bookingService";
 
 const Booking = () => {
   const location = useLocation();
@@ -43,8 +44,12 @@ const Booking = () => {
     if (Object.keys(newErrors).length === 0) {
       setIsSubmitting(true);
       try {
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        toast.success("Booking Confirmed");
+        const response = await submitBooking(formData);
+        if (response.success) {
+          toast.success(response.message);
+        } else {
+          toast.error("Booking Failed. Try again");
+        }
       } catch (error) {
         toast.error("Boooking failed. Try again", error);
       } finally {
