@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import destinations from "../data/destinations";
 import DestinationCard from "../components/DestinationCard";
+import Hero from "../components/Hero";
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -14,25 +15,28 @@ const Home = () => {
   };
 
   return (
-    <div className="container mt-4 ">
-      <h2 className="mb-4">Explore Destinations</h2>
+    <>
+      <Hero />
+      <div className="container mt-4 ">
+        <h2 className="mb-4">Explore Destinations</h2>
 
-      <div className="mb-4">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="search destinations..."
-          value={searchTerm}
-          onChange={handleChange}
-        />
-      </div>
+        <div className="mb-4">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="search destinations..."
+            value={searchTerm}
+            onChange={handleChange}
+          />
+        </div>
 
-      <div className="row">
-        {filteredDestinations.map((destination) => (
-          <DestinationCard key={destination.id} destination={destination} />
-        ))}
+        <div className="row">
+          {filteredDestinations.map((destination) => (
+            <DestinationCard key={destination.id} destination={destination} />
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
