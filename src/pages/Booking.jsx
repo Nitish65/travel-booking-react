@@ -5,6 +5,8 @@ const Booking = () => {
   const location = useLocation();
   const destination = location.destination?.destination;
 
+  const [errors, setErrors] = useState({});
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -20,12 +22,23 @@ const Booking = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    let newErrors = {};
 
-    if (!formData.name || !formData.email) {
-      alert("Please fill all the required details");
-      return;
+    if (!formData.name.trim()) {
+      newErrors.name = "Full Name is required";
     }
-    alert("Booking Successful");
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Enter valid email address";
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      alert("Booking Successfully");
+    }
   };
 
   return (
@@ -44,21 +57,26 @@ const Booking = () => {
           <label className="form-label">Full Name</label>
           <input
             type="text"
-            className="form-control"
+            className={`form-control ${errors.name ? "is-invalid" : ""} `}
             onChange={handleChange}
             name="name"
             value={formData.name}
           />
+          {errors.name && <div className="invalid-feedback">{errors.name}</div>}
         </div>
         <div className="mb-3">
           <label className="form-label">Email</label>
           <input
             type="text"
-            className="form-control"
+            className={`form-control ${errors.email ? "is-invalid" : ""} `}
             name="email"
             value={formData.email}
             onChange={handleChange}
           />
+
+          {errors.email && (
+            <div className="invalid-feedback">{errors.email}</div>
+          )}
         </div>
         <div className="mb-3">
           <label className="form-label">Number of Travelers</label>
