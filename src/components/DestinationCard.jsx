@@ -1,6 +1,12 @@
+import { useNavigate } from "react-router-dom";
 import "../styles/global.css";
 
 const DestinationCard = ({ destination }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/booking", { state: { destination } });
+  };
   return (
     <div className="col-md-4 mb-4">
       <div className="card h-100 shadow-sm">
@@ -13,7 +19,9 @@ const DestinationCard = ({ destination }) => {
           <h5 className="card-title">{destination.name}</h5>
           <p className="card-text text-muted">{destination.description}</p>
           <h6 className="mt-auto text-primary">₹ {destination.price}</h6>
-          <button className="btn btn-primary mt-2">Book Now</button>
+          <button className="btn btn-primary mt-2" onClick={handleClick}>
+            Book Now
+          </button>
         </div>
       </div>
     </div>
