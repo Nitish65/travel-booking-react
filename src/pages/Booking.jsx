@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Booking = () => {
   const location = useLocation();
   const destination = location.destination?.destination;
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
 
   const [formData, setFormData] = useState({
@@ -13,6 +15,8 @@ const Booking = () => {
     travelers: 1,
   });
 
+  // Implemented controlled form validation using React state and Bootstrap validation feedback classes.
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -20,7 +24,7 @@ const Booking = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {};
 
@@ -37,7 +41,15 @@ const Booking = () => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      alert("Booking Successfully");
+      setIsSubmitting(true);
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        toast.success("Booking Confirmed");
+      } catch (error) {
+        toast.error("Boooking failed. Try again", error);
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -64,6 +76,7 @@ const Booking = () => {
           />
           {errors.name && <div className="invalid-feedback">{errors.name}</div>}
         </div>
+
         <div className="mb-3">
           <label className="form-label">Email</label>
           <input
@@ -78,6 +91,7 @@ const Booking = () => {
             <div className="invalid-feedback">{errors.email}</div>
           )}
         </div>
+
         <div className="mb-3">
           <label className="form-label">Number of Travelers</label>
           <input
@@ -89,8 +103,19 @@ const Booking = () => {
             min={1}
           />
         </div>
-        <button type="submit" className="btn btn-success">
-          Confirm Booking
+        <button
+          type="submit"
+          className="btn btn-success"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? (
+            <>
+              <span className="spinner-border spinner-border-sm me-2"></span>
+              Processing...
+            </>
+          ) : (
+            "Confirm Booking"
+          )}
         </button>
       </form>
     </div>

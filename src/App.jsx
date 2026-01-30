@@ -4,6 +4,7 @@ import Header from "./components/layout/Header";
 import Home from "./pages/Home";
 import Footer from "./components/layout/Footer";
 import Booking from "./pages/Booking";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -18,6 +19,15 @@ function App() {
         </div>
         <Footer />
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="light"
+      />
     </>
   );
 }
